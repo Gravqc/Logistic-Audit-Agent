@@ -22,22 +22,6 @@ services:
     volumes:
       - neo4j_data:/data
 
-  # API service will be uncommented once the app is ready.
-  # api:
-  #   build: .
-  #   ports:
-  #     - "8000:8000"
-  #   env_file: .env
-  #   depends_on:
-  #     - postgres
-  #     - neo4j
-  #   command: >
-  #     sh -c "
-  #       poetry run alembic upgrade head &&
-  #       poetry run python scripts/seed_loader.py --data data/seed_data_logistics.json &&
-  #       poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-  #     "
-
 volumes:
   postgres_data:
   neo4j_data:
