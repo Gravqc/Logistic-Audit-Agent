@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: freight
+      POSTGRES_PASSWORD: freight
+      POSTGRES_DB: freight
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  neo4j:
+    image: neo4j:5
+    environment:
+      NEO4J_AUTH: neo4j/password
+    ports:
+      - "7474:7474"   # browser
+      - "7687:7687"   # bolt
+    volumes:
+      - neo4j_data:/data
+
+  # API service will be uncommented once the app is ready.
+  # api:
+  #   build: .
+  #   ports:
+  #     - "8000:8000"
+  #   env_file: .env
+  #   depends_on:
+  #     - postgres
+  #     - neo4j
+  #   command: >
+  #     sh -c "
+  #       poetry run alembic upgrade head &&
+  #       poetry run python scripts/seed_loader.py --data data/seed_data_logistics.json &&
+  #       poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+  #     "
+
+volumes:
+  postgres_data:
+  neo4j_data:

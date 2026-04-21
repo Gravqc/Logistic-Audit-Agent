@@ -1,0 +1,427 @@
+{
+  "_notes_for_candidate": "This file contains test data for the freight bill processing assignment. The data is intentionally designed to include a mix of clean matches and ambiguous cases. Do not modify this file — treat it as the input to your system.",
+
+  "carriers": [
+    {
+      "id": "CAR001",
+      "name": "Safexpress Logistics",
+      "carrier_code": "SFX",
+      "gstin": "27AAACS4521Q1ZK",
+      "bank_account": "HDFC-0044556677",
+      "status": "active",
+      "onboarded_on": "2022-01-15"
+    },
+    {
+      "id": "CAR002",
+      "name": "Delhivery Freight",
+      "carrier_code": "DEL",
+      "gstin": "27AAECD7521R1ZA",
+      "bank_account": "ICICI-0088997766",
+      "status": "active",
+      "onboarded_on": "2022-03-20"
+    },
+    {
+      "id": "CAR003",
+      "name": "TCI Express",
+      "carrier_code": "TCI",
+      "gstin": "27AAACT3381M1ZB",
+      "bank_account": "SBI-0055443322",
+      "status": "active",
+      "onboarded_on": "2023-06-10"
+    },
+    {
+      "id": "CAR004",
+      "name": "Blue Dart Aviation",
+      "carrier_code": "BDA",
+      "gstin": "27AAACB7111F1ZC",
+      "bank_account": "AXIS-0011223344",
+      "status": "active",
+      "onboarded_on": "2024-02-01"
+    },
+    {
+      "id": "CAR005",
+      "name": "VRL Logistics",
+      "carrier_code": "VRL",
+      "gstin": "27AAACV2221Q1ZD",
+      "bank_account": "KOTAK-0099887766",
+      "status": "active",
+      "onboarded_on": "2023-11-05"
+    }
+  ],
+
+  "carrier_contracts": [
+    {
+      "id": "CC-2024-SFX-001",
+      "carrier_id": "CAR001",
+      "effective_date": "2024-01-01",
+      "expiry_date": "2025-12-31",
+      "status": "active",
+      "notes": "Annual contract for North lanes — standard rates",
+      "rate_card": [
+        { "lane": "DEL-BOM", "description": "Delhi to Mumbai", "rate_per_kg": 12.50, "min_charge": 5000.00, "fuel_surcharge_percent": 8 },
+        { "lane": "DEL-BLR", "description": "Delhi to Bangalore", "rate_per_kg": 15.00, "min_charge": 6000.00, "fuel_surcharge_percent": 8 },
+        { "lane": "DEL-HYD", "description": "Delhi to Hyderabad", "rate_per_kg": 14.00, "min_charge": 5500.00, "fuel_surcharge_percent": 8 }
+      ]
+    },
+    {
+      "id": "CC-2024-SFX-002",
+      "carrier_id": "CAR001",
+      "effective_date": "2024-06-01",
+      "expiry_date": "2025-05-31",
+      "status": "active",
+      "notes": "Premium expedited contract — overlaps with CC-2024-SFX-001 on some lanes with faster SLA and higher rates.",
+      "rate_card": [
+        { "lane": "DEL-BOM", "description": "Delhi to Mumbai (48hr SLA)", "rate_per_kg": 16.00, "min_charge": 7000.00, "fuel_surcharge_percent": 5 },
+        { "lane": "DEL-PUN", "description": "Delhi to Pune (48hr SLA)", "rate_per_kg": 17.50, "min_charge": 7500.00, "fuel_surcharge_percent": 5 }
+      ]
+    },
+    {
+      "id": "CC-2025-SFX-003",
+      "carrier_id": "CAR001",
+      "effective_date": "2025-04-01",
+      "expiry_date": "2026-03-31",
+      "status": "active",
+      "notes": "Renewed contract — replaces rates from CC-2024-SFX-001 for new FY. Has overlap with earlier contracts for a few months.",
+      "rate_card": [
+        { "lane": "DEL-BOM", "description": "Delhi to Mumbai", "rate_per_kg": 13.20, "min_charge": 5200.00, "fuel_surcharge_percent": 9 },
+        { "lane": "DEL-BLR", "description": "Delhi to Bangalore", "rate_per_kg": 15.80, "min_charge": 6200.00, "fuel_surcharge_percent": 9 }
+      ]
+    },
+    {
+      "id": "CC-2024-DEL-001",
+      "carrier_id": "CAR002",
+      "effective_date": "2024-04-01",
+      "expiry_date": "2025-03-31",
+      "status": "active",
+      "notes": "Annual contract for South lanes",
+      "rate_card": [
+        { "lane": "BLR-CHN", "description": "Bangalore to Chennai", "rate_per_kg": 8.00, "min_charge": 3500.00, "fuel_surcharge_percent": 7 },
+        { "lane": "BLR-HYD", "description": "Bangalore to Hyderabad", "rate_per_kg": 9.50, "min_charge": 4000.00, "fuel_surcharge_percent": 7 }
+      ]
+    },
+    {
+      "id": "CC-2023-TCI-001",
+      "carrier_id": "CAR003",
+      "effective_date": "2023-07-01",
+      "expiry_date": "2024-06-30",
+      "status": "expired",
+      "notes": "Previous year contract — now expired.",
+      "rate_card": [
+        { "lane": "BOM-AHM", "description": "Mumbai to Ahmedabad", "rate_per_kg": 7.50, "min_charge": 3000.00, "fuel_surcharge_percent": 6 }
+      ]
+    },
+    {
+      "id": "CC-2024-TCI-002",
+      "carrier_id": "CAR003",
+      "effective_date": "2024-07-01",
+      "expiry_date": "2025-06-30",
+      "status": "active",
+      "notes": "Current contract — priced per full truckload (FTL) with per-kg alternate billing (1 FTL = 8000 kg capacity).",
+      "rate_card": [
+        { "lane": "BOM-AHM", "description": "Mumbai to Ahmedabad", "rate_per_unit": 48000.00, "unit": "FTL", "unit_capacity_kg": 8000, "alternate_rate_per_kg": 6.50, "min_charge": 48000.00, "fuel_surcharge_percent": 6 }
+      ]
+    },
+    {
+      "id": "CC-2024-BDA-001",
+      "carrier_id": "CAR004",
+      "effective_date": "2024-03-01",
+      "expiry_date": "2025-02-28",
+      "status": "active",
+      "notes": "Air freight contract with mid-term fuel surcharge revision",
+      "rate_card": [
+        { "lane": "DEL-BOM-AIR", "description": "Delhi to Mumbai (Air)", "rate_per_kg": 85.00, "min_charge": 12000.00, "fuel_surcharge_percent": 12, "revised_on": "2024-10-01", "revised_fuel_surcharge_percent": 18 }
+      ]
+    },
+    {
+      "id": "CC-2024-VRL-001",
+      "carrier_id": "CAR005",
+      "effective_date": "2024-05-01",
+      "expiry_date": "2026-04-30",
+      "status": "active",
+      "notes": "Two-year contract for East and West lanes",
+      "rate_card": [
+        { "lane": "KOL-BOM", "description": "Kolkata to Mumbai", "rate_per_kg": 11.00, "min_charge": 4500.00, "fuel_surcharge_percent": 8 },
+        { "lane": "KOL-DEL", "description": "Kolkata to Delhi", "rate_per_kg": 10.50, "min_charge": 4200.00, "fuel_surcharge_percent": 8 }
+      ]
+    }
+  ],
+
+  "shipments": [
+    {
+      "id": "SHP-2025-001",
+      "carrier_id": "CAR001",
+      "contract_id": "CC-2024-SFX-001",
+      "lane": "DEL-BOM",
+      "shipment_date": "2025-01-10",
+      "status": "partially_delivered",
+      "total_weight_kg": 2000,
+      "notes": "Multi-truck delivery — partial deliveries across two BOLs"
+    },
+    {
+      "id": "SHP-2025-002",
+      "carrier_id": "CAR001",
+      "contract_id": "CC-2024-SFX-001",
+      "lane": "DEL-BLR",
+      "shipment_date": "2025-02-05",
+      "status": "delivered",
+      "total_weight_kg": 850
+    },
+    {
+      "id": "SHP-2025-003",
+      "carrier_id": "CAR001",
+      "contract_id": "CC-2024-SFX-002",
+      "lane": "DEL-PUN",
+      "shipment_date": "2025-02-15",
+      "status": "delivered",
+      "total_weight_kg": 420
+    },
+    {
+      "id": "SHP-2025-004",
+      "carrier_id": "CAR002",
+      "contract_id": "CC-2024-DEL-001",
+      "lane": "BLR-CHN",
+      "shipment_date": "2025-01-20",
+      "status": "delivered",
+      "total_weight_kg": 1200
+    },
+    {
+      "id": "SHP-2025-005",
+      "carrier_id": "CAR003",
+      "contract_id": "CC-2024-TCI-002",
+      "lane": "BOM-AHM",
+      "shipment_date": "2025-02-20",
+      "status": "delivered",
+      "total_weight_kg": 8000,
+      "notes": "Full truckload"
+    },
+    {
+      "id": "SHP-2025-006",
+      "carrier_id": "CAR004",
+      "contract_id": "CC-2024-BDA-001",
+      "lane": "DEL-BOM-AIR",
+      "shipment_date": "2024-11-05",
+      "status": "delivered",
+      "total_weight_kg": 250
+    },
+    {
+      "id": "SHP-2025-007",
+      "carrier_id": "CAR005",
+      "contract_id": "CC-2024-VRL-001",
+      "lane": "KOL-BOM",
+      "shipment_date": "2025-02-28",
+      "status": "delivered",
+      "total_weight_kg": 1500
+    }
+  ],
+
+  "bills_of_lading": [
+    {
+      "id": "BOL-2025-001",
+      "shipment_id": "SHP-2025-001",
+      "delivery_date": "2025-01-18",
+      "actual_weight_kg": 1200,
+      "notes": "First truck — 1200 of 2000 kg delivered"
+    },
+    {
+      "id": "BOL-2025-002",
+      "shipment_id": "SHP-2025-002",
+      "delivery_date": "2025-02-12",
+      "actual_weight_kg": 850
+    },
+    {
+      "id": "BOL-2025-003",
+      "shipment_id": "SHP-2025-003",
+      "delivery_date": "2025-02-22",
+      "actual_weight_kg": 420
+    },
+    {
+      "id": "BOL-2025-004",
+      "shipment_id": "SHP-2025-004",
+      "delivery_date": "2025-01-28",
+      "actual_weight_kg": 1200
+    },
+    {
+      "id": "BOL-2025-005",
+      "shipment_id": "SHP-2025-005",
+      "delivery_date": "2025-02-28",
+      "actual_weight_kg": 7800,
+      "_note": "Received 7800 kg (under 8000 kg FTL capacity — still full truckload billing)"
+    },
+    {
+      "id": "BOL-2025-006",
+      "shipment_id": "SHP-2025-006",
+      "delivery_date": "2024-11-15",
+      "actual_weight_kg": 250
+    },
+    {
+      "id": "BOL-2025-007",
+      "shipment_id": "SHP-2025-007",
+      "delivery_date": "2025-03-05",
+      "actual_weight_kg": 1500
+    }
+  ],
+
+  "freight_bills": [
+    {
+      "_scenario": "Clean match — freight bill references shipment, weight and charges match exactly. Should auto-approve.",
+      "id": "FB-2025-101",
+      "carrier_id": "CAR001",
+      "carrier_name": "Safexpress Logistics",
+      "bill_number": "SFX/2025/00234",
+      "bill_date": "2025-02-15",
+      "shipment_reference": "SHP-2025-002",
+      "lane": "DEL-BLR",
+      "billed_weight_kg": 850,
+      "rate_per_kg": 15.00,
+      "base_charge": 12750.00,
+      "fuel_surcharge": 1020.00,
+      "gst_amount": 2479.00,
+      "total_amount": 16249.00
+    },
+    {
+      "_scenario": "Ambiguous — carrier has 3 overlapping contracts covering DEL-BOM lane at different rates. No shipment reference. Agent must choose which contract applies.",
+      "id": "FB-2025-102",
+      "carrier_id": "CAR001",
+      "carrier_name": "Safexpress Logistics",
+      "bill_number": "SFX/2025/00251",
+      "bill_date": "2025-04-10",
+      "shipment_reference": null,
+      "lane": "DEL-BOM",
+      "billed_weight_kg": 600,
+      "rate_per_kg": 13.20,
+      "base_charge": 7920.00,
+      "fuel_surcharge": 712.80,
+      "gst_amount": 1553.90,
+      "total_amount": 10186.70
+    },
+    {
+      "_scenario": "Partial delivery — shipment was for 2000 kg, first BOL delivered 1200 kg, this bill covers remaining 800 kg on a second truck. Agent must trace prior freight bills.",
+      "id": "FB-2025-103",
+      "carrier_id": "CAR001",
+      "carrier_name": "Safexpress Logistics",
+      "bill_number": "SFX/2025/00245",
+      "bill_date": "2025-02-25",
+      "shipment_reference": "SHP-2025-001",
+      "lane": "DEL-BOM",
+      "billed_weight_kg": 800,
+      "rate_per_kg": 12.50,
+      "base_charge": 10000.00,
+      "fuel_surcharge": 800.00,
+      "gst_amount": 1944.00,
+      "total_amount": 12744.00
+    },
+    {
+      "_scenario": "OVER-BILLING — BOL confirms 1200 kg delivered on first truck, but this bill claims 1500 kg at the same per-kg rate. Previous bill (FB-2025-103) already billed 800 kg for remaining load. Net over-billing vs actual delivery. Classic case the system must catch.",
+      "id": "FB-2025-104",
+      "carrier_id": "CAR001",
+      "carrier_name": "Safexpress Logistics",
+      "bill_number": "SFX/2025/00267",
+      "bill_date": "2025-03-15",
+      "shipment_reference": "SHP-2025-001",
+      "lane": "DEL-BOM",
+      "billed_weight_kg": 1500,
+      "rate_per_kg": 12.50,
+      "base_charge": 18750.00,
+      "fuel_surcharge": 1500.00,
+      "gst_amount": 3645.00,
+      "total_amount": 23895.00
+    },
+    {
+      "_scenario": "Rate drift — billed rate (₹8.70/kg) is ~8.75% above the contracted rate (₹8.00/kg). Small enough to miss, large enough to matter. Should flag.",
+      "id": "FB-2025-105",
+      "carrier_id": "CAR002",
+      "carrier_name": "Delhivery Freight",
+      "bill_number": "DEL/25-26/1089",
+      "bill_date": "2025-01-25",
+      "shipment_reference": "SHP-2025-004",
+      "lane": "BLR-CHN",
+      "billed_weight_kg": 1200,
+      "rate_per_kg": 8.70,
+      "base_charge": 10440.00,
+      "fuel_surcharge": 730.80,
+      "gst_amount": 2010.74,
+      "total_amount": 13181.54
+    },
+    {
+      "_scenario": "Expired contract — bill date (2025-03-20) falls after the only contract with this carrier (CC-2023-TCI-001) expired (2024-06-30). A newer contract exists (CC-2024-TCI-002) with different pricing/units.",
+      "id": "FB-2025-106",
+      "carrier_id": "CAR003",
+      "carrier_name": "TCI Express",
+      "bill_number": "TCI/2025/00047",
+      "bill_date": "2025-03-20",
+      "shipment_reference": null,
+      "lane": "BOM-AHM",
+      "billed_weight_kg": 4500,
+      "rate_per_kg": 7.50,
+      "base_charge": 33750.00,
+      "fuel_surcharge": 2025.00,
+      "gst_amount": 6439.50,
+      "total_amount": 42214.50
+    },
+    {
+      "_scenario": "Unit of measure mismatch — contract is per FTL (₹48,000/FTL, 1 FTL = 8000 kg capacity). Bill is per-kg (7800 kg × ₹6.50/kg). Semantically valid alternate billing but requires unit reconciliation.",
+      "id": "FB-2025-107",
+      "carrier_id": "CAR003",
+      "carrier_name": "TCI Express",
+      "bill_number": "TCI/2025/00052",
+      "bill_date": "2025-03-01",
+      "shipment_reference": "SHP-2025-005",
+      "lane": "BOM-AHM",
+      "billed_weight_kg": 7800,
+      "rate_per_kg": 6.50,
+      "billing_unit": "kg",
+      "base_charge": 50700.00,
+      "fuel_surcharge": 3042.00,
+      "gst_amount": 9673.56,
+      "total_amount": 63415.56
+    },
+    {
+      "_scenario": "Contract revision — bill date (2024-11-20) falls after fuel surcharge revision date (2024-10-01). Must use revised fuel surcharge (18%), not original (12%). Bill correctly uses revised rate — should pass if agent handles contract revisions.",
+      "id": "FB-2025-108",
+      "carrier_id": "CAR004",
+      "carrier_name": "Blue Dart Aviation",
+      "bill_number": "BDA/24-25/4567",
+      "bill_date": "2024-11-20",
+      "shipment_reference": "SHP-2025-006",
+      "lane": "DEL-BOM-AIR",
+      "billed_weight_kg": 250,
+      "rate_per_kg": 85.00,
+      "base_charge": 21250.00,
+      "fuel_surcharge": 3825.00,
+      "gst_amount": 4513.50,
+      "total_amount": 29588.50
+    },
+    {
+      "_scenario": "Duplicate bill — same bill number and carrier as FB-2025-101, re-submitted. Must detect and reject/flag.",
+      "id": "FB-2025-109",
+      "carrier_id": "CAR001",
+      "carrier_name": "Safexpress Logistics",
+      "bill_number": "SFX/2025/00234",
+      "bill_date": "2025-02-15",
+      "shipment_reference": "SHP-2025-002",
+      "lane": "DEL-BLR",
+      "billed_weight_kg": 850,
+      "rate_per_kg": 15.00,
+      "base_charge": 12750.00,
+      "fuel_surcharge": 1020.00,
+      "gst_amount": 2479.00,
+      "total_amount": 16249.00
+    },
+    {
+      "_scenario": "Unknown carrier — 'Gati KWE' has no carrier record, no contract. Spot carrier used for emergency shipment. Must escalate to human review.",
+      "id": "FB-2025-110",
+      "carrier_id": null,
+      "carrier_name": "Gati KWE Logistics",
+      "bill_number": "GAT/2025/00089",
+      "bill_date": "2025-03-25",
+      "shipment_reference": null,
+      "lane": "CHN-DEL",
+      "billed_weight_kg": 350,
+      "rate_per_kg": 22.00,
+      "base_charge": 7700.00,
+      "fuel_surcharge": 924.00,
+      "gst_amount": 1552.32,
+      "total_amount": 10176.32
+    }
+  ]
+}
