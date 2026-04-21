@@ -25,9 +25,9 @@ async def run(state: FreightBillState) -> dict:
 
     # Shipment matching
     shipment_found_via = state.get("shipment_found_via", "none")
-    if shipment_found_via == "fuzzy":
+    if shipment_found_via == "inferred":
         score -= 10.0
-    elif shipment_found_via == "fuzzy_multiple":
+    elif shipment_found_via == "inferred_multiple":
         score -= 15.0
     elif shipment_found_via == "none":
         score -= 20.0

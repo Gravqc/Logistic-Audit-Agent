@@ -1,5 +1,9 @@
 from app.agent.state import FreightBillState
 from app.services.ai_client import get_ai_client
+from app.db.postgres import AsyncSessionLocal
+from app.db.models import Carrier
+from sqlalchemy import select
+from app.prompts.normalize import NORMALIZE_PROMPT
 from datetime import datetime
 
 async def run(state: FreightBillState) -> dict:
@@ -17,20 +21,14 @@ async def run(state: FreightBillState) -> dict:
     
     # 4. Call AI to normalise carrier name
     raw_name = freight_bill.get("carrier_name", "")
-    # In a real system, these might come from the DB, but using a static list for demo
-    known_names = [
-        "Safexpress Logistics", 
-        "Delhivery Freight", 
-        "TCI Express", 
-        "Blue Dart Aviation", 
-        "VRL Logistics"
-    ]
     
-    system_prompt = (
-        "You are a carrier name normaliser for an Indian logistics system.\n"
-        "Given a raw carrier name and a list of known carrier names, return ONLY the best\n"
-        "matching known carrier name. If no match exists, return 'UNKNOWN'. No explanation."
-    )
+    # Query database for all known carrier names
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(select(Carrier.name))
+        known_names = result.scalars().all()
+    
+    system_prompt = NORMALIZE_PROMPT
+    
     user_prompt = f"Raw name: {raw_name}\nKnown carriers: {known_names}"
     
     ai_client = get_ai_client()

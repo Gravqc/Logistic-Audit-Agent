@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     # LLM — provider-agnostic
     LLM_PROVIDER: str = "google"   # "anthropic" | "openai" | "google"
     # Using Gemini model matching the google provider
-    LLM_MODEL: str = "gemini-1.5-pro-latest"
+    LLM_MODEL: str = "gemini-3-flash-preview"
     LLM_API_KEY: Optional[str] = None
     GEMINI_API_KEY: Optional[str] = None
 

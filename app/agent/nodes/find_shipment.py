@@ -58,10 +58,10 @@ async def run(state: FreightBillState) -> dict:
                         "status": shipment.status.value,
                         "total_weight_kg": shipment.total_weight_kg
                     }
-                    shipment_found_via = "fuzzy"
+                    shipment_found_via = "inferred"
             elif len(candidates) > 1:
                 # multiple candidates
-                shipment_found_via = "fuzzy_multiple"
+                shipment_found_via = "inferred_multiple"
                 
         if matched_shipment:
             # Fetch BOLs

@@ -1,5 +1,6 @@
 from app.agent.state import FreightBillState
 from app.services.ai_client import get_ai_client
+from app.prompts.generate_evidence import GENERATE_EVIDENCE_PROMPT
 import json
 
 async def run(state: FreightBillState) -> dict:
@@ -27,12 +28,7 @@ async def run(state: FreightBillState) -> dict:
     
     context_str = json.dumps(context, indent=2)
     
-    system_prompt = (
-        "You are an audit assistant for a logistics operations team. Your job is to write\n"
-        "clear, concise explanations of freight bill validation decisions for human reviewers.\n"
-        "Write in plain English. Be specific about numbers. State what matched, what failed,\n"
-        "and why the decision was made. Do not use jargon. Keep it under 200 words."
-    )
+    system_prompt = GENERATE_EVIDENCE_PROMPT
     
     ai_client = get_ai_client()
     try:
