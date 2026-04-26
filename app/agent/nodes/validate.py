@@ -1,6 +1,7 @@
 from app.agent.state import FreightBillState, ValidationResult
 from app.db.postgres import AsyncSessionLocal
 from app.db.models import FreightBill
+from app.config import get_settings
 from sqlalchemy import select
 from datetime import datetime
 
@@ -100,9 +101,10 @@ async def run(state: FreightBillState) -> dict:
         billed_rate = freight_bill.get("rate_per_kg")
         if contracted_rate is not None and billed_rate is not None:
             deviation_pct = abs(billed_rate - contracted_rate) / contracted_rate * 100
-            # using 2.0% as drift tolerance
-            if deviation_pct > 2.0:
-                severity = "fail" if deviation_pct > 10 else "warning"
+            settings = get_settings()
+            # using configured drift tolerance
+            if deviation_pct > settings.RATE_DRIFT_TOLERANCE_PERCENT:
+                severity = "fail" if deviation_pct > 5 else "warning"
                 results.append({
                     "check": "rate_check",
                     "passed": False,
