@@ -51,6 +51,10 @@ Spin up the PostgreSQL and Neo4j databases:
 ```bash
 docker-compose up -d
 ```
+Open Postgres CLI (psql)
+```
+psql -U freight -d freight
+```
 
 ### 4. Install Dependencies
 ```bash
